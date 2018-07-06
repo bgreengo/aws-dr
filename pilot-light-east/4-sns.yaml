@@ -1,0 +1,14 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creates sns
+Resources:
+  SNS: 
+    Type: "AWS::SNS::Topic"
+    Properties: 
+      Subscription: 
+        - 
+          Endpoint: bgreen@infiniticg.com
+          Protocol: email
+      TopicName: failovertopic
+
+

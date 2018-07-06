@@ -1,0 +1,36 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creates an ENI 
+Parameters:
+  WebSubnet:
+    Description: Public Subnet in VPC
+    Type: String
+    Default: subnet-0a404f53
+  WebServerSecurityGroup:
+    Description: Security Group Name for EC2
+    Type: String
+Resources:
+  EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+  EIPAssociate:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      AllocationId:
+        Fn::GetAtt:
+        - EIP
+        - AllocationId
+      NetworkInterfaceId:
+        Ref: NetworkInterface
+  NetworkInterface:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+      SubnetId:
+        Ref: WebSubnet
+      Description: Interface for webservers
+      GroupSet:
+      - Ref: WebServerSecurityGroup
+      Tags:
+      - Key: Name
+        Value: WebENI

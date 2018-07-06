@@ -1,0 +1,68 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: DNS failover
+Parameters:
+  PrimaryRecord:
+    Type: String
+    Description: The primary record
+  SecondaryRecord:
+    Type: String
+    Description: The secondary record 
+  DomainName:
+    Type: String
+    Description: The domain name
+  HealthCheckPath:
+    Type: String
+    Description: The URL to perform the health check against.
+    Default: "/index.html"
+  HostedZoneId:
+    Type: String
+    Description: The Route53 HostedZoneId to create these records in.
+    Deafult: ZDJFTU500WUQU
+Resources:
+  HealthCheck:
+    Type: AWS::Route53::HealthCheck
+    Properties:
+      HealthCheckConfig:
+        FailureThreshold: 1
+        IPAddress:
+          Ref: PrimaryRecord
+        FullyQualifiedDomainName:
+          Ref: DomainName
+        Port: 80
+        RequestInterval: 30
+        ResourcePath:
+          Ref: HealthCheckPath
+        Type: HTTP
+      HealthCheckTags:
+      - Key: Name
+        Value:
+          Ref: DomainName
+  ThePrimaryRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Failover: PRIMARY
+      HealthCheckId:
+        Ref: HealthCheck
+      HostedZoneId:
+        Ref: HostedZoneId
+      Name:
+        Ref: DomainName
+      ResourceRecords:
+      - Ref: PrimaryRecord
+      SetIdentifier: primary-record
+      TTL: '30'
+      Type: A
+  TheSecondaryRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      Failover: SECONDARY
+      HostedZoneId:
+        Ref: HostedZoneId
+      Name:
+        Ref: DomainName
+      ResourceRecords:
+      - Ref: SecondaryRecord
+      SetIdentifier: secondary-record
+      TTL: '30'
+      Type: A
