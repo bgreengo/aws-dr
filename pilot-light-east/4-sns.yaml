@@ -1,13 +1,18 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Creates sns
+Parameters:
+  Email:
+    Description: Subscription to sns
+    Type: String
 Resources:
   SNS: 
     Type: "AWS::SNS::Topic"
     Properties: 
       Subscription: 
         - 
-          Endpoint: bgreen@infiniticg.com
+          Endpoint: 
+            Ref: Email
           Protocol: email
       TopicName: failovertopic
 

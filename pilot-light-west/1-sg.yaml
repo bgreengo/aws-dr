@@ -1,8 +1,8 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Creates security groups
+Description: security group
 Resources:
-  WebServerSecurityGroup1:
+  WebServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: pilotlight-sg
