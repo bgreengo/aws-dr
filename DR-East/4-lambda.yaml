@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An Amazon SNS trigger that logs the message pushed to the SNS topic.
+Parameters:
+  Email:
+    Description: Subscription to sns
+    Type: String
+Resources:
+  snsmessagepython:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: start-instance.lambda_handler
+      Runtime: python2.7
+      CodeUri: s3://blake-wandergolf/start-instance.py.zip
+      Description: An Amazon SNS trigger that logs the message pushed to the SNS topic.
+      MemorySize: 128
+      Timeout: 10
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'ec2:Start*'
+              Resource: '*'
+      Events:
+        SNS1:
+          Type: SNS
+          Properties:
+            Topic:
+              Ref: SNSTopic1
+  SNSTopic1:
+    Type: 'AWS::SNS::Topic'
+    Properties: 
+      Subscription: 
+        - 
+          Endpoint: 
+            Ref: Email
+          Protocol: email
+      TopicName: dr-topic

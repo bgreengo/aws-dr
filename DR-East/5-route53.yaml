@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: DNS failover
+Description: DNS failover with CloudWatch alarm to SNS topic.
 Parameters:
   PrimaryRecord:
     Type: String
@@ -11,14 +11,13 @@ Parameters:
   DomainName:
     Type: String
     Description: The domain name
-  HealthCheckPath:
-    Type: String
-    Description: The URL to perform the health check against.
-    Default: "/index.html"
+    Default: aws.greengotech.net
   HostedZoneId:
     Type: String
     Description: The Route53 HostedZoneId to create these records in.
-    Deafult: ZDJFTU500WUQU
+    Default: ZDJFTU500WUQU
+  AlarmSNSTopicArn:
+    Type: String
 Resources:
   HealthCheck:
     Type: AWS::Route53::HealthCheck
@@ -31,8 +30,7 @@ Resources:
           Ref: DomainName
         Port: 80
         RequestInterval: 30
-        ResourcePath:
-          Ref: HealthCheckPath
+        ResourcePath: /index.html
         Type: HTTP
       HealthCheckTags:
       - Key: Name
@@ -66,3 +64,18 @@ Resources:
       SetIdentifier: secondary-record
       TTL: '30'
       Type: A
+
+  HealthCheckAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Alarm sends to SNS to invoke Lambda
+      AlarmName: HealthCheckAlarm
+      Namespace: AWS/Route53
+      MetricName: HealthCheckStatus
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Period: 60
+      EvaluationPeriods: 1
+      Statistic: Sum
+      Threshold: 1
+      AlarmActions:
+      - Ref: AlarmSNSTopicArn

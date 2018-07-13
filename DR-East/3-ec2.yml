@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Pilot Light example
+Description: Disaster Recovery example
 Parameters:
   NetworkInterface:
     Description: ENI for EC2
@@ -26,13 +26,13 @@ Resources:
                 - ''
                 - - "<html>\n"
                   - "  <head>\n"
-                  - "    <title>Pilot Light Example</title>\n"
+                  - "    <title>DR Example</title>\n"
                   - '    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 '
                   - "  </head>\n"
                   - "  <body>\n"
-                  - "    <h1>US-West-2</h1>\n"
+                  - "    <h1>US-East-1</h1>\n"
                   - "  </body>\n"
                   - "</html>\n"
               mode: '000600'
@@ -89,7 +89,7 @@ Resources:
                 - "/etc/cfn/cfn-hup.conf"
                 - "/etc/cfn/hooks.d/cfn-auto-reloader.conf"
     Properties:
-      ImageId: ami-a9d09ed1
+      ImageId: ami-b70554c8
       InstanceType: t2.micro
       NetworkInterfaces:
       - NetworkInterfaceId:
