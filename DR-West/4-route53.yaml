@@ -4,10 +4,10 @@ Description: DNS failover with CloudWatch alarm to SNS topic.
 Parameters:
   PrimaryRecord:
     Type: String
-    Description: The primary record
+    Description: US-West-2 EIP
   SecondaryRecord:
     Type: String
-    Description: The secondary record 
+    Description: US-East-1 EIP
   DomainName:
     Type: String
     Description: The domain name

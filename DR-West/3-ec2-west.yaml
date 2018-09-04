@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Disaster Recovery example
+Description: US-West-2 EC2 instance
 Parameters:
   NetworkInterface:
     Description: ENI for EC2
@@ -32,7 +32,7 @@ Resources:
 '
                   - "  </head>\n"
                   - "  <body>\n"
-                  - "    <h1>US-East-1</h1>\n"
+                  - "    <h1>US-West-2</h1>\n"
                   - "  </body>\n"
                   - "</html>\n"
               mode: '000600'
@@ -89,7 +89,7 @@ Resources:
                 - "/etc/cfn/cfn-hup.conf"
                 - "/etc/cfn/hooks.d/cfn-auto-reloader.conf"
     Properties:
-      ImageId: ami-b70554c8
+      ImageId: ami-a9d09ed1
       InstanceType: t2.micro
       NetworkInterfaces:
       - NetworkInterfaceId:
@@ -134,3 +134,6 @@ Outputs:
         - Fn::GetAtt:
           - WebServerInstance
           - PublicDnsName
+  InstanceID:
+    Description: Instance ID
+    Value: !Ref WebServerInstance

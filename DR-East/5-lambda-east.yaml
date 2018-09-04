@@ -5,13 +5,21 @@ Parameters:
   Email:
     Description: Subscription to sns
     Type: String
+  S3Bucket:
+    Description: Location of the python script
+    Type: String
+  ZipFile:
+    Description: Zipped python script
+    Type: String
 Resources:
   snsmessagepython:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: start-instance.lambda_handler
       Runtime: python2.7
-      CodeUri: s3://blake-wandergolf/start-instance.py.zip
+      CodeUri: 
+        Bucket: !Ref S3Bucket
+        Key: !Ref ZipFile
       Description: An Amazon SNS trigger that logs the message pushed to the SNS topic.
       MemorySize: 128
       Timeout: 10

@@ -34,3 +34,11 @@ Resources:
       Tags:
       - Key: Name
         Value: WebENI
+
+Outputs:
+  EIPOutput:
+    Description: US-East-1 EIP
+    Value: !Ref EIP
+  ENIOutput:
+    Description: ENI for EC2 instance
+    Value: !Ref NetworkInterface

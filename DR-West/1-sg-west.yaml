@@ -12,3 +12,7 @@ Resources:
         FromPort: '80'
         ToPort: '80'
         CidrIp: 0.0.0.0/0
+Outputs:
+  WebServerSecurityGroup:
+    Description: sg-id
+    Value: !GetAtt WebServerSecurityGroup.GroupId
