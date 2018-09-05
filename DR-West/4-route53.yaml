@@ -16,8 +16,7 @@ Parameters:
     Type: String
     Description: The Route53 HostedZoneId to create these records in.
     Default: ZDJFTU500WUQU
-  AlarmSNSTopicArn:
-    Type: String
+
 Resources:
   HealthCheck:
     Type: AWS::Route53::HealthCheck
@@ -65,17 +64,4 @@ Resources:
       TTL: '30'
       Type: A
 
-  HealthCheckAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      AlarmDescription: Alarm sends to SNS to invoke Lambda
-      AlarmName: HealthCheckAlarm
-      Namespace: AWS/Route53
-      MetricName: HealthCheckStatus
-      ComparisonOperator: GreaterThanOrEqualToThreshold
-      Period: 60
-      EvaluationPeriods: 1
-      Statistic: Sum
-      Threshold: 1
-      AlarmActions:
-      - Ref: AlarmSNSTopicArn
+#
